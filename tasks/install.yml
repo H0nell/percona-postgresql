@@ -1,0 +1,36 @@
+---
+- name: Install prerequesites
+  become: True
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: True
+  loop:
+    - wget
+    - gnupg2
+    - curl
+    - lsb-release
+
+- name: Install percona repository
+  become: True
+  apt:
+    deb: "https://repo.percona.com/apt/percona-release_latest.generic_all.deb"
+    state: present
+    update_cache: yes
+
+- name: Enable postgresql repository
+  become: True
+  command: "percona-release setup ppg-14.2"
+
+- name: Install postgresql from apt
+  become: True
+  apt:
+    name: "percona-postgresql-14"
+    update_cache: yes
+
+- name: Start postgresql
+  become: True
+  service:
+    name: "postgresql"
+    state: "started"
+    enabled: "yes"

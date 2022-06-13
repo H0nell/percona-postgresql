@@ -1,0 +1,3 @@
+---
+# tasks file for percona-patroni
+- include_tasks: install.yml
